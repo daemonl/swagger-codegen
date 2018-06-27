@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"strings"
 	{{#withHTTPResponse}}"net/http"{{/withHTTPResponse}}
+	{{#testifyMockStub}}"github.com/stretchr/testify/mock"{{/testifyMockStub}}
 {{#imports}}	"{{import}}"
 {{/imports}}
 )
@@ -26,11 +27,24 @@ type {{classname}}Service interface {
 
 {{/withInterfaces}}
 
+{{#testifyMockStub}}
+type {{classname}}MockService struct {
+    *mock.Mock
+}
+{{#operation}}
+func (a *{{{classname}}}MockService) {{{nickname}}}(ctx context.Context{{#hasParams}}, {{/hasParams}}{{#allParams}}{{#required}}{{paramName}} {{{dataType}}}{{#hasMore}}, {{/hasMore}}{{/required}}{{/allParams}}{{#hasOptionalParams}}localVarOptionals *{{{nickname}}}Opts{{/hasOptionalParams}}) ({{#returnType}}{{{returnType}}}, {{/returnType}}{{#withHTTPResponse}}*http.Response, {{/withHTTPResponse}}error) {
+    args := a.Called({{#allParams}}{{#required}}{{{paramName}}}{{#hasMore}}, {{/hasMore}}{{/required}}{{/allParams}})
+{{#returnType}}    return args.Get(0).({{{returnType}}}), args.Error(1){{/returnType}}
+{{^returnType}}    return args.Error(0){{/returnType}}
+}
+{{/operation}}
+{{/testifyMockStub}}
+
 type {{classname}}{{#withInterfaces}}HTTP{{/withInterfaces}}Service service
 {{#operation}}
 
-/* 
-{{{classname}}}Service{{#summary}} {{.}}{{/summary}}{{#notes}}
+/*
+{{nickname}}{{#summary}} {{.}}{{/summary}}{{#notes}}
 {{notes}}{{/notes}}
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 {{#allParams}}{{#required}} * @param {{paramName}}{{#description}} {{.}}{{/description}}

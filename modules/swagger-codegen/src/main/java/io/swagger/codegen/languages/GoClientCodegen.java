@@ -23,6 +23,7 @@ public class GoClientCodegen extends AbstractGoCodegen {
     public static final String WITH_XML = "withXml";
     public static final String RETURN_HTTP_RESPONSE = "returnHTTPResponse";
     public static final String WITH_INTERFACES = "withInterfaces";
+    public static final String MOCK_STUB = "testifyMockStub";
 
     public GoClientCodegen() {
         super();
@@ -61,6 +62,7 @@ public class GoClientCodegen extends AbstractGoCodegen {
                 .defaultValue("true"));
         cliOptions.add(CliOption.newBoolean(WITH_INTERFACES, "includes an interface for, e.g., mock clients"));
 
+        cliOptions.add(CliOption.newBoolean(MOCK_STUB, "create a mock implementation of the service"));
     }
 
     @Override
@@ -105,6 +107,7 @@ public class GoClientCodegen extends AbstractGoCodegen {
                 additionalProperties.put(WITH_XML, "true");
             }
         }
+
     }
 
     /**
