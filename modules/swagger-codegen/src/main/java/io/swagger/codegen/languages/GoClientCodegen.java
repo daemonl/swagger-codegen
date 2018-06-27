@@ -1,5 +1,6 @@
 package io.swagger.codegen.languages;
 
+import com.sun.org.apache.regexp.internal.RE;
 import io.swagger.codegen.*;
 import io.swagger.models.properties.ArrayProperty;
 import io.swagger.models.properties.MapProperty;
@@ -20,6 +21,8 @@ public class GoClientCodegen extends AbstractGoCodegen {
     protected String apiDocPath = "docs/";
     protected String modelDocPath = "docs/";
     public static final String WITH_XML = "withXml";
+    public static final String RETURN_HTTP_RESPONSE = "returnHTTPResponse";
+    public static final String WITH_INTERFACES = "withInterfaces";
 
     public GoClientCodegen() {
         super();
@@ -54,6 +57,9 @@ public class GoClientCodegen extends AbstractGoCodegen {
         cliOptions.add(new CliOption(CodegenConstants.PACKAGE_VERSION, "Go package version.")
                 .defaultValue("1.0.0"));
         cliOptions.add(CliOption.newBoolean(WITH_XML, "whether to include support for application/xml content type and include XML annotations in the model (works with libraries that provide support for JSON and XML)"));
+        cliOptions.add(CliOption.newBoolean(RETURN_HTTP_RESPONSE, "API calls include the raw *http.Response in the return values")
+                .defaultValue("true"));
+        cliOptions.add(CliOption.newBoolean(WITH_INTERFACES, "includes an interface for, e.g., mock clients"));
 
     }
 

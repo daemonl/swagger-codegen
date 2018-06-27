@@ -40,7 +40,7 @@ type APIClient struct {
 {{#apis}}
 {{#operations}}
 
-	{{classname}} *{{classname}}Service
+	{{classname}} *{{classname}}{{#withInterfaces}}HTTP{{/withInterfaces}}Service
 {{/operations}}
 {{/apis}}
 {{/apiInfo}}
@@ -65,7 +65,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	// API Services
 {{#apis}}
 {{#operations}}
-	c.{{classname}} = (*{{classname}}Service)(&c.common)
+	c.{{classname}} = (*{{classname}}{{#withInterfaces}}HTTP{{/withInterfaces}}Service)(&c.common)
 {{/operations}}
 {{/apis}}
 {{/apiInfo}}
